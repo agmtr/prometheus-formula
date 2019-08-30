@@ -74,7 +74,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         group: {{ name }}
         envfile: /etc/default/{{ name }}.sh
         workdir: {{ p.dir.var }}/{{ name }}
-        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%- if name is not match('.*exporter') %} --config.file {{ p.dir.etc }}/{{ name }}.yml {% endif %}
+        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%- if name is not match('.*exporter') %} --config.file {{ p.dir.etc }}/{{ name }}.yml {% endif %} $ARGS
         stop: '' #not needed
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
