@@ -25,6 +25,7 @@ prometheus-config-user-install-{{ name }}-user-present:
   {%- endfor %}
 
 # only exporters workaround
+{%- if 'prometheus' not in pillar['prometheus']['wanted'] %}
 {%- set name = 'prometheus' %}
 prometheus-config-user-install-{{ name }}-user-present:
   group.present:
@@ -40,3 +41,4 @@ prometheus-config-user-install-{{ name }}-user-present:
       {%- if grains.os_family == 'MacOS' %}
     - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
       {%- endif %}
+{% endif %}
