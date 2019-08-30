@@ -102,8 +102,6 @@ prometheus-config-args-{{ name }}-all:
 prometheus-config-args-{{ name }}-file-managed:
   file.managed:
     - name: {{ prometheus.dir.args }}/{{ name }}.sh
-    - owner: {{ name }}
-    - group: {{ name }}
     - contents: |
         ARGS="{{ concat_args(args) }}"
     - watch_in:
