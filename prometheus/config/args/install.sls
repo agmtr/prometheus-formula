@@ -17,8 +17,13 @@ include:
 prometheus-config-file-args-file-directory:
   file.directory:
     - name: {{ prometheus.dir.args }}
+    {%- if prometheus.dir.args == '/etc/default' %}
+    - user: root
+    - group: root
+    {% else %}
     - user: prometheus
     - group: prometheus
+    {%- endif %}
     - mode: 755
     - makedirs: True
     - require:
