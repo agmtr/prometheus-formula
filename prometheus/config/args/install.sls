@@ -13,7 +13,7 @@ include:
   - {{ sls_archive_install if prometheus.use_upstream_archive else sls_package_install }}
   - {{ sls_config_users }}
 
-{% if prometheus.dir.args != '/etc/default'
+{%- if prometheus.dir.args != '/etc/default' %}
 prometheus-config-file-args-file-directory:
   file.directory:
     - name: {{ prometheus.dir.args }}
@@ -23,6 +23,7 @@ prometheus-config-file-args-file-directory:
     - makedirs: True
     - require:
       - sls: '{{ sls_archive_install if prometheus.use_upstream_archive else sls_package_install }}.*'
+{% endif %}
 
     {%- for name in prometheus.wanted %}
         {%- if name in prometheus.config or name in prometheus.service %}
