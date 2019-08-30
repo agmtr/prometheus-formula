@@ -7,9 +7,11 @@
 {%- from tplroot ~ "/jinja/macros.jinja" import format_kwargs with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 {%- set sls_users_install = tplroot ~ '.config.users' %}
+{%- set sls_config_args = tplroot ~ '.config.args' %}
 
 include:
   - {{ sls_users_install }}
+  - {{ sls_config_args }}
 
 prometheus-config-file-basedir-file-directory:
   file.directory:
@@ -73,7 +75,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         user: {{ name }}
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
-        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%- if name is not match('.*exporter') %} --config.file {{ p.dir.etc }}/{{ name }}.yml {% endif %}
+        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%- if name is not match('.*exporter') %} --config.file {{ p.dir.etc }}/{{ name }}.yml {% endif %} {{ sls_config_args }}
         stop: '' #not needed
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
