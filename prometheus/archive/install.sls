@@ -73,7 +73,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         user: {{ name }}
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
-        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%if name is not match('*exporter*') %} --config.file {% endif %}{{ p.dir.etc }}/{{ name }}.yml
+        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }}{%if {{name}} is not match('*exporter*') %} --config.file {{ p.dir.etc }}/{{ name }}.yml {% endif %}
         stop: '' #not needed
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
