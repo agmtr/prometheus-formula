@@ -23,3 +23,20 @@ prometheus-config-user-install-{{ name }}-user-present:
       {%- endif %}
 
   {%- endfor %}
+
+# only exporters workaround
+{%- set name = 'prometheus' %}
+prometheus-config-user-install-{{ name }}-user-present:
+  group.present:
+    - name: {{ name }}
+    - require_in:
+      - user: prometheus-config-user-install-{{ name }}-user-present
+  user.present:
+    - name: {{ name }}
+    - shell: /bin/false
+    - createhome: false
+    - groups:
+      - {{ name }}
+      {%- if grains.os_family == 'MacOS' %}
+    - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
+      {%- endif %}
